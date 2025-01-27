@@ -17,10 +17,28 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+    protected $casts = [
+        'binusian' => 'boolean',
+        'leader_birth_date' => 'date'
+    ];
+
     protected $fillable = [
-        'name',
-        'email',
+        'team_name',
         'password',
+        'leader_name',
+        'leader_email',
+        'leader_whatsapp',
+        'leader_line',
+        'leader_github',
+        'leader_birth_place',
+        'leader_birth_date',
+        'leader_cv',
+        'binusian',
+        'leader_card',
+        'member_1',
+        'member_2',
+        'member_3',
+        'role'
     ];
 
     /**
