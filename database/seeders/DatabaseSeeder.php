@@ -1,9 +1,9 @@
 <?php
 
 namespace Database\Seeders;
-
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Database\Seeders\AdminSeeder; // Ensure this is correctly imported
+
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,11 +13,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Run the AdminSeeder to create the admin user
+        $this->call(AdminSeeder::class);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // Optionally, create additional users for testing
+        \App\Models\User::factory(10)->create([
+            'role' => 'user', // Assign the default role to these users
         ]);
     }
 }

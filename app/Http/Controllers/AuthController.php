@@ -106,27 +106,38 @@ class AuthController extends Controller
         return view('login');
     }
 
-    function login(Request $request){
-        $request->validate([
-            'team_name' => 'required',
-            'password' => 'required'
-        ]);
+    public function login(Request $request)
+{
+    $request->validate([
+        'team_name' => 'required',
+        'password' => 'required',
+    ]);
 
-        $credentials = ([
-            'team_name' => $request -> team_name,
-            'password' => $request -> password
-        ]);
+    $credentials = [
+        'team_name' => $request->team_name,
+        'password' => $request->password,
+    ];
 
-        if(Auth::attempt($credentials)){
-            $request->session()->regenerate();
-            Cookie::queue('team_name', Auth::user()->team_name);
-            Log::info(Auth::user()->team_name.' is login.');
-            return redirect('/');
+    if (Auth::attempt($credentials)) {
+        $request->session()->regenerate();
+
+        Cookie::queue('team_name', Auth::user()->team_name);
+        Log::info(Auth::user()->team_name . ' is logged in.');
+
+        // Check if the logged-in user is an admin
+        if (Auth::user()->role === 'admin') {
+            return redirect()->route('admin.index'); // Redirect to the admin dashboard if the user is an admin
         }
-        return back()->withErrors([
-            'team_name' => 'The provided credentials do not match our records.'
-        ])->onlyInput('team_name');
+
+        // Redirect to the homepage for regular users
+        return redirect('/');
     }
+
+    return back()->withErrors([
+        'team_name' => 'The provided credentials do not match our records.',
+    ])->onlyInput('team_name');
+}
+
 
     function logout(Request $request){
         Auth::logout();
