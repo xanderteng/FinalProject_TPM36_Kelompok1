@@ -36,8 +36,11 @@ class User extends Authenticatable
         'binusian',
         'leader_card',
         'member_1',
+        'member_1_email',
         'member_2',
+        'member_2_email',
         'member_3',
+        'member_3_email',
         'role'
     ];
 

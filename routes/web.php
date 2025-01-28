@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EmailController;
 
 Route::get('/', function () {
     return view('landing');
@@ -16,3 +17,5 @@ Route::controller(AuthController::class)->group(function(){
     Route::post('/logout', 'logout')->name('logout');
     Route::get('/dashboard/{id}', 'dashboard')->name('dashboard');
 });
+
+Route::post('/send-email', [EmailController::class, 'sendEmail'])->name('sendEmail');

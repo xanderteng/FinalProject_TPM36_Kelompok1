@@ -38,7 +38,7 @@
             <div class="card-body">
               <h5 class="card-title">CV</h5>
               <p class="card-text">View or download the uploaded CV.</p>
-              <<button class="btn btn-primary" onclick="viewCV('{{ asset('storage/leader_cv/' . $user->leader_cv) }}')">View CV</button>
+              <button class="btn btn-primary" onclick="viewCV('{{ asset('storage/leader_cv/' . $user->leader_cv) }}')">View CV</button>
               <button class="btn btn-secondary" onclick="downloadCV('{{ asset('storage/leader_cv/' . $user->leader_cv) }}')">Download CV</button>
 
             </div>

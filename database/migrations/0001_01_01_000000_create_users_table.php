@@ -17,11 +17,13 @@ return new class extends Migration
             $table->string('password');
 
             $table->string('leader_name');
-            $table->string('member_1')->nullable();
-            $table->string('member_2')->nullable();
-            $table->string('member_3')->nullable();
-            
             $table->string('leader_email')->unique();
+            $table->string('member_1')->nullable();
+            $table->string('member_1_email')->unique()->nullable();
+            $table->string('member_2')->nullable();
+            $table->string('member_2_email')->unique()->nullable();
+            $table->string('member_3')->nullable();
+            $table->string('member_3_email')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('leader_whatsapp')->unique();
             $table->string('leader_line')->unique();
