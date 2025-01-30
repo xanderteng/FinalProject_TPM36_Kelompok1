@@ -1,123 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User Dashboard</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{ asset('css/dash.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="container mt-5">
-    <!-- Header -->
-    <header class="text-center mb-5">
-      <h1>User Dashboard</h1>
-      <p class="lead">Welcome to your competition dashboard</p>
-    </header>
+    <div class="dashboard-container">
+        <header class="navigation-header">
+          <img src="/storage/images/logo hackathon.png" alt="Company Logo" class="logo" />
+          <nav class="nav-links">
+            <a href={{route('landing')}} class="nav-btns">HOME</a>
+            <a href="prize.html" class="nav-btns">PRIZE</a>
+            <a href="mentor.html" class="nav-btns">MENTOR & JURY</a>
+            <a href="about.html" class="nav-btns">ABOUT</a>
+            <a href="faq.html" class="nav-btns">FAQ</a>
+            <a href="timeline.html" class="nav-btns">TIMELINE</a>
 
-    <!-- Team Information -->
-    <section class="mb-5">
-      <h2>Team Information</h2>
-      <div class="card">
-        <div class="card-body">
-          <p><strong>Team Name:</strong> <span id="team-name"> {{ $user->team_name }}</span></p>
-          <p><strong>Leader Name:</strong> <span id="leader-name"> {{ $user->leader_name }}</span></p>
-          <p><strong>Leader Email:</strong> <span id="leader-email"> {{ $user->leader_email }}</span></p>
-          <p><strong>Leader WhatsApp:</strong> <span id="leader-whatsapp"> {{ $user->leader_whatsapp }}</span></p>
-          <p><strong>Leader Line ID:</strong> <span id="leader-line"> {{ $user->leader_line }}</span></p>
-        </div>
-      </div>
-    </section>
+          </nav>
+          <button class="logout-btn" onclick="window.location.href='log_in.html'">LOGOUT</button>
+        </header>
+    </div>
 
-    <!-- CV and ID Card Section -->
-    <section class="mb-5">
-      <h2>Documents</h2>
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">CV</h5>
-              <p class="card-text">View or download the uploaded CV.</p>
-              <<button class="btn btn-primary" onclick="viewCV('{{ asset('storage/leader_cv/' . $user->leader_cv) }}')">View CV</button>
-              <button class="btn btn-secondary" onclick="downloadCV('{{ asset('storage/leader_cv/' . $user->leader_cv) }}')">Download CV</button>
+
+    <main class="profile-section">
+      <h1 class="team-title">Team Name : {{ $user->team_name }}</h1>
+      <div class="profile-content">
+        <section class="profile-image-section">
+            <div class="profile-grid">
+                <div class="image-container">
+                    <img src="/storage/leader_card/{{$user->leader_card}}" alt="Team Leader Profile Photo" class="profile-image" />
+                </div>
+                <div class="button-container">
+                    <button class="cv-button" onclick="viewCV('{{ asset('storage/leader_cv/' . $user->leader_cv) }}')">View CV</button>
+                </div>
+            </div>
+        </section>
+
+
+
+        <section class="profile-details">
+          <div class="details-grid">
+            <div class="personal-info">
+              <div class="info-label">Leader Full Name :</div>
+              <div class="info-value">{{ $user->leader_name }}</div>
+              <div class="info-label">Email :</div>
+              <div class="info-value">{{ $user->leader_email }}</div>
 
             </div>
-          </div>
-        </div>
-        <div class="col-md-6 mb-3">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">ID Card / Flazz Card</h5>
-              <p class="card-text">View or download the uploaded ID Card.</p>
-              <button class="btn btn-primary" onclick="viewIDCard('{{ asset('storage/leader_card/' . $user->leader_card) }}')">View ID Card</button>
-              <button class="btn btn-secondary" onclick="downloadIDCard('{{ asset('storage/leader_card/' . $user->leader_card) }}')">Download ID Card</button>
+            <div class="contact-info">
+              <div class="info-label">Birthdate :</div>
+              <div class="info-value"> {{ $user->leader_birth_date }} ,  {{ $user->leader_birth_place }}</div>
+              <div class="info-label">Whatsapp :</div>
+              <div class="info-value"> {{ $user->leader_whatsapp }}</div>
             </div>
           </div>
-        </div>
+          <div class="github-section">
+            <div class="info-label">GitHub :</div>
+            <div class="info-value"> {{ $user->leader_github }}</div>
+          </div>
+        </section>
       </div>
-    </section>
+    </main>
 
-    <!-- Timeline Section -->
-    <section class="mb-5">
-      <h2>Timeline</h2>
-      <ul class="list-group">
-        <li class="list-group-item">
-          <strong>Open Registration:</strong> <span id="open-registration">Date</span>
-        </li>
-        <li class="list-group-item">
-          <strong>Close Registration:</strong> <span id="close-registration">Date</span>
-        </li>
-        <li class="list-group-item">
-          <strong>Technical Meeting:</strong> <span id="technical-meeting">Date</span>
-        </li>
-        <li class="list-group-item">
-          <strong>Competition Day:</strong> <span id="competition-day">Date</span>
-        </li>
-      </ul>
-    </section>
-
-    <!-- Contact Person Section -->
-    <section class="mb-5">
-      <h2>Contact Person</h2>
-      <div class="card">
-        <div class="card-body">
-          <p><strong>Name:</strong> <span id="contact-name">test</span></p>
-          <p><strong>Email:</strong> <span id="contact-email">test</span></p>
-          <p><strong>WhatsApp:</strong> <span id="contact-whatsapp">test</span></p>
-        </div>
+    <div style="width: 100%; height: 920px; position: relative" class="timeline-container">
+      <div style="width: 100%; height: 920px; left: 0px; top: 0px; position: absolute; background: #306B8F;">
+        <div style="width: 62px; height: 61px; left: 148px; top: 598px; position: absolute; background: #D9D9D9; border-radius: 9999px"></div>
+        <div style="width: 62px; height: 61px; left: 1256px; top: 279px; position: absolute; background: #D9D9D9; border-radius: 9999px"></div>
+        <div style="width: 62px; height: 61px; left: 838px; top: 694px; position: absolute; background: #D9D9D9; border-radius: 9999px"></div>
+        <div style="width: 62px; height: 61px; left: 469px; top: 340px; position: absolute; background: #D9D9D9; border-radius: 9999px"></div>
+        <div style="width: 324.01px; height: 0px; left: 198px; top: 593px; position: absolute; transform: rotate(-36.34deg); transform-origin: 0 0; border: 2px white solid"></div>
+        <div style="width: 413.07px; height: 0px; left: 521px; top: 409px; position: absolute; transform: rotate(43.63deg); transform-origin: 0 0; border: 2px white solid"></div>
+        <div style="width: 477.39px; height: 0px; left: 912px; top: 686px; position: absolute; transform: rotate(-43.90deg); transform-origin: 0 0; border: 2px white solid"></div>
+        <div style="left: 87px; top: 667px; position: absolute; text-align: center; color: white; font-size: 20px; font-family: Poppins; font-weight: 600; line-height: 40px; word-wrap: break-word">Open Registration<br/>30 May</div>
+        <div style="left: 407px; top: 252px; position: absolute; text-align: center; color: white; font-size: 20px; font-family: Poppins; font-weight: 600; line-height: 40px; word-wrap: break-word">Close Registration<br/>11 June</div>
+        <div style="left: 775px; top: 763px; position: absolute; text-align: center; color: white; font-size: 20px; font-family: Poppins; font-weight: 600; line-height: 40px; word-wrap: break-word">Technical Meeting<br/>12 June</div>
+        <div style="left: 1188px; top: 184px; position: absolute; text-align: center; color: white; font-size: 20px; font-family: Poppins; font-weight: 600; line-height: 40px; word-wrap: break-word">COMPETITION DAY!!<br/>14 - 16 June</div>
       </div>
-    </section>
+      <div style="width: 361px; height: 65px; left: 131px; top: 55px; position: absolute; text-align: center; color: white; font-size: 80px; font-family: Poppins; font-weight: 700; line-height: 40px; word-wrap: break-word">TIMELINE</div>
+    </div>
+
+    <div class="footer-container">
+      <h1 class="footer-title">Contacts</h1>
+      <div class="phone">
+        <img src="/storage/images/whatsapp pic.png" alt="phone" class="footer-pic">
+        <p class="contact-people">Contact Person 1 - 08xxxx</p>
+        <p class="contact-people">Contact Person 2 - 08xxxx</p>
+        <p class="contact-people">Contact Person 3 - 08xxxx</p>
+
+      </div>
+      <div class="insta">
+        <img src="/storage/images/insta pic.png" alt="instagram" class="footer-pic">
+        <p class="insta-techno">@technoscapebncc</p>
+      </div>
   </div>
-
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Custom JS -->
   <script>
     function viewCV(filePath) {
-      window.open(filePath, '_blank');
-    }
-
-    function downloadCV(filePath) {
-      const link = document.createElement('a');
-      link.href = filePath;
-      link.download = filePath.split('/').pop();
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-
-    function viewIDCard(filePath) {
-      window.open(filePath, '_blank');
-    }
-
-    function downloadIDCard(filePath) {
-      const link = document.createElement('a');
-      link.href = filePath;
-      link.download = filePath.split('/').pop();
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
+    window.open(filePath, '_blank');
+  }
   </script>
 </body>
 </html>
+
+
