@@ -2,13 +2,16 @@ document.addEventListener("DOMContentLoaded", function () {
     // Smooth Scroll buat navigasi biar pas klik langsung ke bagian yang dituju
     document.querySelectorAll("nav ul li a").forEach(anchor => {
         anchor.addEventListener("click", function (event) {
-            event.preventDefault();
-            const sectionId = this.getAttribute("href").substring(1);
-            document.getElementById(sectionId).scrollIntoView({
-                behavior: "smooth"
-            });
+            const sectionId = this.getAttribute("href");
+            if (sectionId.startsWith("#")) { // Only prevent default for internal links
+                event.preventDefault();
+                document.getElementById(sectionId.substring(1)).scrollIntoView({
+                    behavior: "smooth"
+                });
+            }
         });
     });
+    
 
     // FAQ bisa dibuka tutup pas diklik
     const faqItems = document.querySelectorAll(".faq-item");

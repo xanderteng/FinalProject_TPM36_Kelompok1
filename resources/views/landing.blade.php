@@ -22,6 +22,7 @@
             <li><a href="#about">ABOUT</a></li>
             <li><a href="#faq">FAQ</a></li>
             <li><a href="#timeline">TIMELINE</a></li>
+            <li><a href="{{ Auth::check() ? route('dashboard', Auth::id()) : route('getLogin') }}">DASHBOARD</a>
         </ul>
     </nav>
     <div class="auth-container">

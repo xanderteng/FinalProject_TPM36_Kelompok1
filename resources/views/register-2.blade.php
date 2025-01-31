@@ -25,12 +25,9 @@
         @csrf
       <div> 
         <!-- Leader Information -->
-        
-        
-
-        
-            <label class="label label-leader-name">Leader Full Name</label>
-            <input type="text" placeholder="Input your Leader Full Name" class="input-field input-leader-name" id="leader_name"name="leader_name" value="{{ old('leader_name') }}">
+    
+        <label class="label label-leader-name">Leader Full Name</label>
+        <input type="text" placeholder="Input your Leader Full Name" class="input-field input-leader-name" id="leader_name"name="leader_name" value="{{ old('leader_name') }}">
         
 
         <label class="label label-email">Email</label>
