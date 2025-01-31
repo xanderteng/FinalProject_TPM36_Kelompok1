@@ -20,7 +20,7 @@ class AuthController extends Controller
             'team_name' => 'required',
             'password' => [
                 'required',
-                'min:8', 
+                'min:8',
                 'regex:/[A-Z]/',
                 'regex:/[a-z]/',
                 'regex:/[0-9]/',
@@ -29,7 +29,7 @@ class AuthController extends Controller
             ],
             'password_confirmation' => [
                 'required',
-                'min:8', 
+                'min:8',
                 'regex:/[A-Z]/',
                 'regex:/[a-z]/',
                 'regex:/[0-9]/',
@@ -78,11 +78,12 @@ class AuthController extends Controller
 
         $leaderCvFile = $request->file('leader_cv');
         $leaderCvFilename = $now . '_' . $leaderCvFile->getClientOriginalName();
-        $leaderCvFile->storeAs('public/leader_cv', $leaderCvFilename);
+        $leaderCvFile->storeAs('leader_cv', $leaderCvFilename, 'public');
+
 
         $leaderCardFile = $request->file('leader_card');
         $leaderCardFilename = $now . '_' . $leaderCardFile->getClientOriginalName();
-        $leaderCardFile->storeAs('public/leader_card', $leaderCardFilename);
+        $leaderCardFile->storeAs('leader_card', $leaderCardFilename, 'public');
 
         User::create([
             'team_name' => $request -> team_name,
