@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Non-Binusian Registration</title>
+  <link rel="stylesheet" href="register_non.css">
+</head>
+<body>
+  <!-- HOME Button -->
+  <button class="home-button">
+    <img src="arrow-icon.png" alt="Arrow" class="arrow-icon">
+    HOME
+  </button>
+
+  <!-- Containers -->
+  <div class="container-pertama">
+    <div class="container-kedua">
+      <div class="container-ketiga">
+        <h1 class="register-title">REGISTER</h1>
+      </div>
+
+      <!-- Form Content -->
+      <div> 
+        <!-- Leader Information -->
+        <label class="label label-leader-name">Leader Full Name</label>
+        <input type="text" placeholder="Input your Leader Full Name" class="input-field input-leader-name">
+
+        <label class="label label-email">Email</label>
+        <input type="email" placeholder="Input your Email Address" class="input-field input-email">
+
+        <!-- Team Members -->
+        <label class="label label-member-one">Member 1</label>
+        <input type="text" placeholder="Input member 1 name" class="input-field input-member-one">
+
+        <label class="label label-email-one">Member 1 Email</label>
+        <input type="email" placeholder="Input member 1 Email Address" class="input-field input-email-one">
+        
+        <label class="label label-member-two">Member 2</label>
+        <input type="text" placeholder="Input member 2 name" class="input-field input-member-two">
+
+        <label class="label label-email-two">Member 2 Email</label>
+        <input type="email" placeholder="Input member 2 Email Address" class="input-field input-email-two">
+
+        <label class="label label-member-three">Member 3</label>
+        <input type="text" placeholder="Input member 3 name" class="input-field input-member-three">
+
+        <label class="label label-email-three">Member 3 Email</label>
+        <input type="email" placeholder="Input member 3 Email Address" class="input-field input-email-three">
+
+        <!-- Contact Info -->
+        <label class="label label-whatsapp">Leader Whatsapp Number</label>
+        <input type="text" placeholder="Input your Whatsapp Number" class="input-field input-whatsapp">
+
+        <label class="label label-line-id">Leader Line ID</label>
+        <input type="text" placeholder="Input your Line ID" class="input-field input-line-id">
+
+        <label class="label label-github">Github/ Gitlab ID</label>
+        <input type="text" placeholder="Input your Github/ Gitlab ID" class="input-field input-github">
+
+        <!-- Birth Information -->
+        <label class="label label-birth-place">Leader Birth Place</label>
+        <input type="text" placeholder="Input your Birth Place (ex: Jakarta)" class="input-field input-birth-place">
+
+        <label class="label label-birth-date">Leader Birth Date</label>
+        <input type="date"  placeholder="Input your Birth Date (dd-mm-yyyy)"class="input-field input-birth-date">
+
+        <!-- Upload CV -->
+        <label class="label label-upload-cv">Upload CV</label>
+        <div class="upload-cv-container">
+          <input type="text" class="input-field upload-field" placeholder="Upload your CV (.PDF)" readonly>
+          <input type="file" class="file-upload" id="upload-cv" accept=".pdf">
+          <label for="upload-cv" class="upload-button">Upload</label>
+        </div>
+        
+        <!-- Radio Buttons -->
+        <div class="radio-group">
+          <input type="radio" id="binusian" class="radio-binusian" name="status">
+          <label for="binusian" class="label-radio">Binusian</label>
+          <input type="radio" id="non-binusian" class="radio-non-binusian" name="status">
+          <label for="non-binusian" class="label-radio">Non-Binusian</label>
+        </div>
+
+        <!-- Register Button -->
+        <button class="button-register">Register</button>
+
+        <!-- Upload ID Card (Leader Only) -->
+        <label class="label label-upload-id">Upload ID Card (Leader Only)</label>
+        <div class="upload-id-container">
+          <input type="text" class="input-field upload-field">
+          <input type="file" class="file-upload" id="upload-id" accept=".pdf,.jpg,.jpeg,.png">
+          <label for="upload-id" class="upload-button">Upload</label>
+      </div>
+    </div>
+  </div>
+
+  <script src="register_non.js"></script>
+</body>
+</html>

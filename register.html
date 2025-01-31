@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration</title>
+  <link rel="stylesheet" href="register.css">
+</head>
+<body>
+  <!-- HOME Button -->
+  <button class="home-button">
+    <img src="arrow-icon.png" alt="Arrow" class="arrow-icon">
+    HOME
+  </button>
+
+  <!-- Containers -->
+  <div class="container-pertama">
+    <div class="container-kedua">
+      <div class="container-ketiga">
+        <h1 class="register-title">REGISTER</h1>
+      </div>
+
+      <!-- Form Content -->
+      <form id="register-form">
+        <!-- Team Information -->
+        <div class="input-control">
+          <label class="label">Team Name</label>
+          <input type="text" placeholder="Input your Team Name" class="input-field input-team-name">
+          <span class="error-message"></span>
+        </div>
+
+        <div class="input-control">
+          <label class="label">Password</label>
+          <input type="password" placeholder="Input your Password" class="input-field input-password">
+          <span class="error-message"></span>
+        </div>
+
+        <div class="input-control">
+          <label class="label">Confirm Password</label>
+          <input type="password" placeholder="Confirm your Password" class="input-field input-confirm-password">
+          <span class="error-message"></span>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="button-submit">Submit</button>
+      </form>
+    
+    </div>
+  </div>
+
+  <script src="register.js"></script>
+</body>
+</html>
