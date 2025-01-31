@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $casts = [
-        'binusian' => 'boolean',
+        'status' => 'boolean',
         'leader_birth_date' => 'date'
     ];
 
@@ -33,7 +33,7 @@ class User extends Authenticatable
         'leader_birth_place',
         'leader_birth_date',
         'leader_cv',
-        'binusian',
+        'status',
         'leader_card',
         'member_1',
         'member_1_email',

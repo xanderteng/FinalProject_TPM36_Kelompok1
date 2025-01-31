@@ -8,26 +8,34 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {
-    function getRegister(){
+    public function getRegister()
+    {
         return view('register');
     }
 
+    public function getRegister2()
+    {
+        return view('register-2');
+    }
+
     public function dashboard($id) {
+        $authUserId = Auth::id();
+        if ($authUserId != $id) {
+            return redirect()->route('dashboard', $authUserId);
+        }
         $user = User::findOrFail($id);
         return view('dashboard', compact('user'));
         dd($user);
     }
 
-
-public function register(Request $request)
-{
-
-    if (!$request->has('step2')) {
+    public function registerStep1(Request $request)
+    {
         $request->validate([
-            'team_name' => 'required',
+            'team_name' => ['required', 'unique:users'],
             'password' => [
                 'required',
                 'min:8',
@@ -45,91 +53,93 @@ public function register(Request $request)
                 'regex:/[0-9]/',
                 'regex:/[^\w]/',
             ],
-        ], [
-            "team_name.required" => "Team name is required",
-            "password.required" => "Password is required",
-            "password.min" => "Password must be 8 characters long",
-            "password.regex" => "Password must include at least one uppercase letter, one lowercase letter, one number, and one special character.",
-            'password.confirmed' => 'Password confirmation does not match.',
+        ]);
+        Session::put('register_data', [
+            'team_name' => $request->team_name,
+            'password' => bcrypt($request->password)
         ]);
 
-        
-        session()->put('team_name', $request->team_name);
-        session()->put('password', $request->password);
+        if (!Session::has('register_data')) {
+            return back()->withErrors(['session' => 'Failed to save session data.']);
+        }
 
-        return view('step2'); 
+        return redirect()->route('getRegister2'); // Move to the next step
     }
 
+    public function registerStep2(Request $request)
+    {
+        if (!Session::has('register_data')) {
+            return redirect()->route('getRegister')->withErrors(['session' => 'Session expired, please restart registration.']);
+        }
     
-    $request->validate([
-        'leader_name' => 'required',
-        'leader_email' => ['required', 'unique:users'],
-        'leader_whatsapp' => ['required', 'unique:users'],
-        'leader_line' => ['required', 'unique:users'],
-        'leader_github' => 'required',
-        'leader_birth_place' => 'required',
-        'leader_birth_date' => [
+        $registerData = Session::get('register_data');
+    
+        // Ensure registerData is not null
+        if (!$registerData || !isset($registerData['team_name'])) {
+            return redirect()->route('getRegister')->withErrors(['session' => 'Session data is missing. Please try again.']);
+        }
+        $request->validate([
+            'leader_name' => 'required',
+            'leader_email' => ['required', 'unique:users'],
+            'member_1' => 'nullable|required_with:member_1_email',  
+            'member_1_email' => 'nullable|required_with:member_1', 
+            'member_2' => 'nullable|required_with:member_2_email',  
+            'member_2_email' => 'nullable|required_with:member_2', 
+            'member_3' => 'nullable|required_with:member_3_email',  
+            'member_3_email' => 'nullable|required_with:member_3', 
+            'leader_whatsapp' => ['required', 'unique:users'],
+            'leader_line' => ['required', 'unique:users'],
+            'leader_github' => 'required',
+            'leader_birth_place' => 'required',
+            'leader_birth_date' => [
             'required',
             'date',
             'before:' . Carbon::now()->subYears(17)->toDateString()
-        ],
-        'leader_cv' => 'required|mimes:jpeg,png,jpg,pdf|max:2048',
-        'binusian' => 'required|boolean',
-        'leader_card' => 'required|mimes:jpeg,png,jpg,pdf|max:2048',
-    ], [
-        "leader_name.required" => "Leader Full Name is required",
-        "leader_email.required" => "Email is required",
-        "leader_email.unique" => "Email is already registered",
-        "leader_whatsapp.required" => "Whatsapp number is required",
-        "leader_whatsapp.unique" => "Whatsapp number is already registered",
-        "leader_line.required" => "Line ID is required",
-        "leader_line.unique" => "Line ID is already registered",
-        "leader_github.required" => "Github/Gitlab ID is required",
-        "leader_birth_place.required" => "Birth Place is required",
-        "leader_birth_date.required" => "Birth Date is required",
-        'leader_birth_date.before' => 'You must be at least 17 years old to register.',
-        "leader_cv.required" => "The CV is required",
-        "leader_cv.mimes" => "The CV must be a file of type: pdf, jpg, jpeg, png.",
-        "leader_cv.max" => "The CV must be less than 2MB",
-        "leader_card.required" => "Card is required",
-        "leader_card.mimes" => "Card must be a file of type: pdf, jpg, jpeg, png.",
-        "leader_card.max" => "Card must be less than 2MB",
-    ]);   
-    $now = now()->format('Y-m-d_H.i.s');
+            ],
+            'leader_cv' => 'required|mimes:jpeg,png,jpg,pdf|max:2048',
+            'status' => 'required|boolean',
+            'leader_card' => 'required|mimes:jpeg,png,jpg,pdf|max:2048',
+        ]);
 
-    $leaderCvFile = $request->file('leader_cv');
-    $leaderCvFilename = $now . '_' . $leaderCvFile->getClientOriginalName();
-    $leaderCvFile->storeAs('leader_cv', $leaderCvFilename, 'public');
+        $now = now()->format('Y-m-d_H.i.s');
 
-    $leaderCardFile = $request->file('leader_card');
-    $leaderCardFilename = $now . '_' . $leaderCardFile->getClientOriginalName();
-    $leaderCardFile->storeAs('leader_card', $leaderCardFilename, 'public');
+        $leaderCvFile = $request->file('leader_cv');
+        $leaderCvFilename = $now . '_' . $leaderCvFile->getClientOriginalName();
+        $leaderCvFile->storeAs('leader_cv', $leaderCvFilename, 'public');
 
-    User::create([
-        'team_name' => session('team_name'),
-        'password' => bcrypt(session('password')),
-        'leader_name' => $request->leader_name,
-        'leader_email' => $request->leader_email,
-        'member_1' => $request->member_1,
-        'member_1_email' => $request->member_1_email,
-        'member_2' => $request->member_2,
-        'member_2_email' => $request->member_2_email,
-        'member_3' => $request->member_3,
-        'member_3_email' => $request->member_3_email,
-        'leader_whatsapp' => $request->leader_whatsapp,
-        'leader_line' => $request->leader_line,
-        'leader_github' => $request->leader_github,
-        'leader_birth_place' => $request->leader_birth_place,
-        'leader_birth_date' => $request->leader_birth_date,
-        'leader_cv' => $leaderCvFilename,
-        'binusian' => $request->input('binusian'),
-        'leader_card' => $leaderCardFilename
-    ]);
+        $leaderCardFile = $request->file('leader_card');
+        $leaderCardFilename = $now . '_' . $leaderCardFile->getClientOriginalName();
+        $leaderCardFile->storeAs('leader_card', $leaderCardFilename, 'public');
+    
 
-    session()->forget(['team_name', 'password']);
+        // Create user with combined data
+        $userData = [
+            'team_name' => $registerData['team_name'],
+            'password' => $registerData['password'],
+            'leader_name' => $request -> leader_name,
+            'leader_email'  => $request -> leader_email,
+            'member_1' => $request->member_1,
+            'member_1_email' => $request->member_1_email,
+            'member_2' => $request->member_2,
+            'member_2_email' => $request->member_2_email,
+            'member_3' => $request->member_3,
+            'member_3_email' => $request->member_3_email,
+            'leader_whatsapp'  => $request -> leader_whatsapp,
+            'leader_line'  => $request -> leader_line,
+            'leader_github' => $request -> leader_github,
+            'leader_birth_place' => $request -> leader_birth_place,
+            'leader_birth_date' => $request -> leader_birth_date,
+            'leader_cv' => $leaderCvFilename,
+            'status' => $request->input('status'),
+            'leader_card' => $leaderCardFilename
+        ];
 
-    return redirect('/')->with('success', 'Team registered successfully!');
-}
+        $user = User::create($userData);
+
+        Session::forget('register_data');
+
+        return redirect('/')->with('success', 'Team registered successfully!');
+    }
 
 
     function getLogin(){
@@ -151,7 +161,11 @@ public function register(Request $request)
             $request->session()->regenerate();
             Cookie::queue('team_name', Auth::user()->team_name);
             Log::info(Auth::user()->team_name.' is login.');
-            return redirect('/');
+            if (Auth::user()->role === 'admin') {
+                return redirect()->route('admin.index'); 
+            }
+             // Authentication passed, redirect to dashboard with user ID
+            return redirect()->route('dashboard', Auth::id());
         }
         return back()->withErrors([
             'team_name' => 'The provided credentials do not match our records.'
@@ -168,3 +182,9 @@ public function register(Request $request)
 
     
 }
+
+
+
+            
+
+        

@@ -31,7 +31,7 @@ return new class extends Migration
             $table->string('leader_birth_place');
             $table->date('leader_birth_date');
             $table->string('leader_cv');
-            $table->boolean('binusian');
+            $table->boolean('status');
             $table->string('leader_card');
             $table->enum('role', ['participant', 'admin'])->default('participant')->nullable();
             $table->rememberToken();
