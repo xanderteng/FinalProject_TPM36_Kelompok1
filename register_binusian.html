@@ -21,76 +21,124 @@
       </div>
 
       <!-- Form Content -->
-      <div> 
+      <form id="register-form">
         <!-- Leader Information -->
+        <div class="input-control">
         <label class="label label-leader-name">Leader Full Name</label>
         <input type="text" placeholder="Input your Leader Full Name" class="input-field input-leader-name">
+        <span class="error-message"></span>
+        </div>
 
+        <div class="input-control">
         <label class="label label-email">Email</label>
         <input type="email" placeholder="Input your Email Address" class="input-field input-email">
+        <span class="error-message"></span>
+        </div>
 
         <!-- Team Members -->
+        <div class="input-control">
         <label class="label label-member-one">Member 1</label>
         <input type="text" placeholder="Input member 1 name" class="input-field input-member-one">
+        <span class="error-message"></span>
+        </div>
 
+        <div class="input-control">
         <label class="label label-email-one">Member 1 Email</label>
         <input type="email" placeholder="Input member 1 Email Address" class="input-field input-email-one">
-        
+        <span class="error-message"></span>
+        </div>
+
+        <div class="input-control">
         <label class="label label-member-two">Member 2</label>
         <input type="text" placeholder="Input member 2 name" class="input-field input-member-two">
+        <span class="error-message"></span>
+        </div>
 
+        <div class="input-control">
         <label class="label label-email-two">Member 2 Email</label>
         <input type="email" placeholder="Input member 2 Email Address" class="input-field input-email-two">
+        <span class="error-message"></span>
+        </div>
 
+        <div class="input-control">
         <label class="label label-member-three">Member 3</label>
         <input type="text" placeholder="Input member 3 name" class="input-field input-member-three">
+        <span class="error-message"></span>
+        </div>
 
+        <div class="input-control">
         <label class="label label-email-three">Member 3 Email</label>
         <input type="email" placeholder="Input member 3 Email Address" class="input-field input-email-three">
+        <span class="error-message"></span>
+        </div>
 
         <!-- Contact Info -->
+        <div class="input-control">
         <label class="label label-whatsapp">Leader Whatsapp Number</label>
         <input type="text" placeholder="Input your Whatsapp Number" class="input-field input-whatsapp">
+        <span class="error-message"></span>
+        </div>
 
+        <div class="input-control">
         <label class="label label-line-id">Leader Line ID</label>
         <input type="text" placeholder="Input your Line ID" class="input-field input-line-id">
+        <span class="error-message"></span>
+        </div>
 
+        <div class="input-control">
         <label class="label label-github">Github/ Gitlab ID</label>
         <input type="text" placeholder="Input your Github/ Gitlab ID" class="input-field input-github">
+        <span class="error-message"></span>
+        </div>
 
         <!-- Birth Information -->
+        <div class="input-control">
         <label class="label label-birth-place">Leader Birth Place</label>
         <input type="text" placeholder="Input your Birth Place (ex: Jakarta)" class="input-field input-birth-place">
+        <span class="error-message"></span>
+        </div>
 
+        <div class="input-control">
         <label class="label label-birth-date">Leader Birth Date</label>
         <input type="date"  placeholder="Input your Birth Date (dd-mm-yyyy)"class="input-field input-birth-date">
-
+        <span class="error-message"></span>
+        </div>
+        
         <!-- Upload CV -->
+        <div class="input-control">
         <label class="label label-upload-cv">Upload CV</label>
         <div class="upload-cv-container">
           <input type="text" class="input-field upload-field" placeholder="Upload your CV (.PDF)" readonly>
           <input type="file" class="file-upload" id="upload-cv" accept=".pdf">
           <label for="upload-cv" class="upload-button">Upload</label>
         </div>
+        <span class="error-message"></span>
+        </div>
         
         <!-- Radio Buttons -->
+        <div class="input-control">
         <div class="radio-group">
           <input type="radio" id="binusian" class="radio-binusian" name="status">
           <label for="binusian" class="label-radio">Binusian</label>
           <input type="radio" id="non-binusian" class="radio-non-binusian" name="status">
           <label for="non-binusian" class="label-radio">Non-Binusian</label>
         </div>
+        <span class="error-message"></span>
+        </div>
 
         <!-- Register Button -->
         <button class="button-register">Register</button>
 
         <!-- Upload Flazz Card (Leader Only) -->
+        <div class="input-control">
         <label class="label label-upload-flazz">Upload FLAZZ Card (Leader Only)</label>
         <div class="upload-flazz-container">
           <input type="text" class="input-field upload-field">
           <input type="file" class="file-upload" id="upload-flazz" accept=".pdf,.jpg,.jpeg,.png">
           <label for="upload-flazz" class="upload-button">Upload</label>
       </div>
+      <span class="error-message"></span>
+        </div>
     </div>
   </div>
 

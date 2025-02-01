@@ -1,116 +1,103 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById("registration-form");
-    const emailFields = document.querySelectorAll("input[type='email']");
-    const whatsappField = document.querySelector(".input-whatsapp");
-    const birthDateField = document.querySelector(".input-birth-date");
-    const cvUploadField = document.querySelector("#upload-cv");
-    const idCardUploadField = document.querySelector("#upload-idcard");
-    const radioButtons = document.querySelectorAll("input[name='status']");
-    const registerButton = document.querySelector(".button-register");
-
-    function showErrorMessage(input, message) {
-        let errorSpan = input.nextElementSibling;
-        if (!errorSpan || !errorSpan.classList.contains("error-message")) {
-            errorSpan = document.createElement("span");
-            errorSpan.classList.add("error-message");
-            input.parentNode.insertBefore(errorSpan, input.nextSibling);
-        }
-        errorSpan.textContent = message;
-        errorSpan.style.color = "red";
-        errorSpan.style.fontSize = "14px";
-        errorSpan.style.marginTop = "5px";
-    }
-
-    function clearErrorMessage(input) {
-        let errorSpan = input.nextElementSibling;
-        if (errorSpan && errorSpan.classList.contains("error-message")) {
-            errorSpan.textContent = "";
-        }
-    }
-
-    form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        if (!validateForm()) {
-            return;
-        }
-        alert("Registration successful!");
+    const form = document.getElementById("register-form");
+    
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      validateForm();
     });
 
     function validateForm() {
-        let isValid = true;
+      let isValid = true;
+
+      document.querySelectorAll(".input-control").forEach(control => {
+        const input = control.querySelector(".input-field, .upload-field");
+        let errorMessage = control.querySelector(".error-message");
         
-        // Validate required fields
-        document.querySelectorAll("input[required]").forEach(input => {
-            if (!input.value.trim()) {
-                showErrorMessage(input, `${input.placeholder} tidak boleh kosong`);
-                isValid = false;
-            } else {
-                clearErrorMessage(input);
-            }
-        });
+        if (!errorMessage) {
+          errorMessage = document.createElement("span");
+          errorMessage.classList.add("error-message");
+          control.appendChild(errorMessage);
+        }
 
-        // Validate Email format
-        emailFields.forEach(email => {
-            if (!email.value.includes("@")) {
-                showErrorMessage(email, "Masukkan email yang valid seperti user@gmail.com");
-                isValid = false;
-            } else {
-                clearErrorMessage(email);
-            }
-        });
-
-        // Validate WhatsApp number length
-        if (whatsappField.value.length < 9) {
-            showErrorMessage(whatsappField, "Nomor WhatsApp minimal 9 karakter");
-            isValid = false;
+        if (input.value.trim() === "") {
+          showError(control, "Field tidak boleh kosong");
+          isValid = false;
         } else {
-            clearErrorMessage(whatsappField);
-        }
+          clearError(control);
 
-        // Validate Age (minimum 17 years old)
-        if (birthDateField) {
-            const birthDate = new Date(birthDateField.value);
-            const today = new Date();
-            const age = today.getFullYear() - birthDate.getFullYear();
-            if (age < 17) {
-                showErrorMessage(birthDateField, "Anda harus berusia minimal 17 tahun");
-                isValid = false;
-            } else {
-                clearErrorMessage(birthDateField);
-            }
-        }
-
-        // Validate CV and ID Card Upload formats
-        [cvUploadField, idCardUploadField].forEach(fileInput => {
-            if (fileInput) {
-                const allowedExtensions = fileInput.id === "upload-cv" ? ["pdf"] : ["pdf", "jpg", "jpeg", "png"];
-                const fileName = fileInput.value;
-                const fileExtension = fileName.split(".").pop().toLowerCase();
-                if (!allowedExtensions.includes(fileExtension)) {
-                    showErrorMessage(fileInput, `${fileInput.id === "upload-cv" ? "CV" : "ID Card"} harus dalam format ${allowedExtensions.join(", ")}`);
-                    isValid = false;
-                } else {
-                    clearErrorMessage(fileInput);
-                }
-            }
-        });
-
-        // Validate Radio Button Selection
-        const isChecked = Array.from(radioButtons).some(radio => radio.checked);
-        if (!isChecked) {
-            alert("Silakan pilih Binusian atau Non-Binusian.");
+          if (input.type === "email" && !validateEmail(input.value)) {
+            showError(control, "Masukkan email yang valid seperti user@gmail.com");
             isValid = false;
+          }
+
+          if (input.classList.contains("input-whatsapp") && !validateWhatsapp(input.value)) {
+            showError(control, "Nomor WhatsApp harus minimal 9 angka.");
+            isValid = false;
+          }
+        }
+      });
+
+      document.querySelectorAll(".file-upload").forEach(upload => {
+        const control = upload.closest(".input-control");
+        let errorMessage = control.querySelector(".error-message");
+
+        if (!errorMessage) {
+          errorMessage = document.createElement("span");
+          errorMessage.classList.add("error-message");
+          control.appendChild(errorMessage);
         }
 
-        return isValid;
+        if (upload.files.length === 0) {
+          showError(control, "File harus diunggah.");
+          isValid = false;
+        } else {
+          clearError(control);
+        }
+      });
+
+      const radioButtons = document.querySelectorAll("input[name='status']");
+      const radioControl = radioButtons[0].closest(".input-control");
+      let errorMessage = radioControl.querySelector(".error-message");
+
+      if (!errorMessage) {
+        errorMessage = document.createElement("span");
+        errorMessage.classList.add("error-message");
+        radioControl.appendChild(errorMessage);
+      }
+
+      if (![...radioButtons].some(radio => radio.checked)) {
+        showError(radioControl, "Harus memilih salah satu status Binusian atau Non-Binusian");
+        isValid = false;
+      } else {
+        clearError(radioControl);
+      }
+
+      if (isValid) {
+        alert("Form submitted successfully!");
+      }
     }
 
-    // Instant validation on input fields
-    document.querySelectorAll("input").forEach(input => {
-        input.addEventListener("input", () => {
-            if (input.value.trim()) {
-                clearErrorMessage(input);
-            }
-        });
-    });
+    function showError(control, message) {
+      let errorMessage = control.querySelector(".error-message");
+      errorMessage.textContent = message;
+      control.classList.add("error");
+      errorMessage.style.display = "block";
+    }
+
+    function clearError(control) {
+      let errorMessage = control.querySelector(".error-message");
+      errorMessage.textContent = "";
+      control.classList.remove("error");
+      errorMessage.style.display = "none";
+    }
+
+    function validateEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    function validateWhatsapp(number) {
+      const whatsappRegex = /^\d{9,}$/;
+      return whatsappRegex.test(number);
+    }
 });
