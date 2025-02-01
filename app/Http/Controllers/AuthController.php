@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Session;
+use App\Http\Resources\TeamCollection;
 
 class AuthController extends Controller
 {
@@ -197,6 +198,13 @@ class AuthController extends Controller
         return redirect('/');
     }
 
+    function teamsAPI(){
+        if (Auth::user()->team_name !== 'Admin Team') {
+            return redirect('/')->with('error', 'Unauthorized');
+        }
+        $user = User::all();
+    return new TeamCollection($user);
+    }
     
 }
 

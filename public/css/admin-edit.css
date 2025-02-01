@@ -35,9 +35,18 @@ html, body {
 
   .header-title {
     flex-grow: 1;
-    margin: auto 0;
-    border: 1px solid rgba(0, 0, 0, 1);
-  }
+    margin: auto 0; /* Adjust vertical alignment */
+    padding: 10px 20px; /* Add some spacing */
+    font-size: 40px; /* Ensure it's large enough */
+    font-weight: 700;
+    color: white; /* Make text fully white */
+    text-align: center;
+    border: none; /* Remove the unwanted border */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80px; /* Adjust height to move it lower */
+}
 
   .logout-btn {
     font-family: 'poppins', sans-serif;

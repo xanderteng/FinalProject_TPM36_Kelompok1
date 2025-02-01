@@ -21,6 +21,7 @@ Route::controller(AuthController::class)->group(function(){
     Route::post('/login', 'login')->name('login');
     Route::post('/logout', 'logout')->name('logout');
     Route::get('/dashboard/{id}', 'dashboard')->name('dashboard');
+    Route::get('/api', 'teamsAPI')->name('teamsAPI');
 });
 
 Route::prefix('admin')->name('admin.')->group(function() {

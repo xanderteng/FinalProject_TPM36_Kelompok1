@@ -11,6 +11,9 @@ class AdminController extends Controller
     // Show all teams (for example)
     public function index(Request $request)
 {
+    if (Auth::user()->team_name !== 'Admin Team') {
+        return redirect('/')->with('error', 'Unauthorized');
+    }
     // Get search query and sort option from the request
     $search = $request->input('search');
     $sort = $request->input('sort', 'name_asc'); // Default sort by name (A-Z)

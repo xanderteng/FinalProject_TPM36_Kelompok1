@@ -65,7 +65,9 @@
             <a href="{{ route('landing') }}">
                 <img src="/storage/images/logo hackathon.png" class="logo" alt="Hackathon Logo" />
             </a>
+            <a href="{{ route('admin.index') }}" style="text-decoration: none;">
             <div class="header-title" role="heading" aria-level="1">Admin Panel</div>
+            </a>
         </div>
         <button class="logout-btn" onclick="window.location.href='log_in.html'">LOGOUT</button>
     </div>
