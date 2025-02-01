@@ -54,30 +54,35 @@ class AuthController extends Controller
                 'regex:/[^\w]/',
             ],
         ]);
-        Session::put('register_data', [
+
+        $registerData = [
             'team_name' => $request->team_name,
-            'password' => bcrypt($request->password)
-        ]);
-
+            'password' => bcrypt($request->password) // Ensure password is hashed
+        ];
+    
+        // Store in session
+        Session::put('register_data', $registerData);
+    
+        // Verify session was saved
         if (!Session::has('register_data')) {
-            return back()->withErrors(['session' => 'Failed to save session data.']);
+            return back()->withErrors(['session' => 'Failed to save session data. Please try again.']);
         }
-
-        return redirect()->route('getRegister2'); // Move to the next step
+    
+        return redirect()->route('getRegister2'); // Move to step 2
     }
 
     public function registerStep2(Request $request)
     {
         if (!Session::has('register_data')) {
-            return redirect()->route('getRegister')->withErrors(['session' => 'Session expired, please restart registration.']);
+        return redirect()->route('getRegister')->withErrors(['session' => 'Session expired, please restart registration.']);
         }
-    
+
         $registerData = Session::get('register_data');
-    
-        // Ensure registerData is not null
+
         if (!$registerData || !isset($registerData['team_name'])) {
             return redirect()->route('getRegister')->withErrors(['session' => 'Session data is missing. Please try again.']);
         }
+
         $request->validate([
             'leader_name' => 'required',
             'leader_email' => ['required', 'unique:users'],
@@ -101,44 +106,53 @@ class AuthController extends Controller
             'leader_card' => 'required|mimes:jpeg,png,jpg,pdf|max:2048',
         ]);
 
-        $now = now()->format('Y-m-d_H.i.s');
-
-        $leaderCvFile = $request->file('leader_cv');
-        $leaderCvFilename = $now . '_' . $leaderCvFile->getClientOriginalName();
-        $leaderCvFile->storeAs('leader_cv', $leaderCvFilename, 'public');
-
-        $leaderCardFile = $request->file('leader_card');
-        $leaderCardFilename = $now . '_' . $leaderCardFile->getClientOriginalName();
-        $leaderCardFile->storeAs('leader_card', $leaderCardFilename, 'public');
+        try {
+            \DB::beginTransaction(); // Start transaction
     
+            $now = now()->format('Y-m-d_H.i.s');
 
-        // Create user with combined data
-        $userData = [
-            'team_name' => $registerData['team_name'],
-            'password' => $registerData['password'],
-            'leader_name' => $request -> leader_name,
-            'leader_email'  => $request -> leader_email,
-            'member_1' => $request->member_1,
-            'member_1_email' => $request->member_1_email,
-            'member_2' => $request->member_2,
-            'member_2_email' => $request->member_2_email,
-            'member_3' => $request->member_3,
-            'member_3_email' => $request->member_3_email,
-            'leader_whatsapp'  => $request -> leader_whatsapp,
-            'leader_line'  => $request -> leader_line,
-            'leader_github' => $request -> leader_github,
-            'leader_birth_place' => $request -> leader_birth_place,
-            'leader_birth_date' => $request -> leader_birth_date,
-            'leader_cv' => $leaderCvFilename,
-            'status' => $request->input('status'),
-            'leader_card' => $leaderCardFilename
-        ];
+            $leaderCvFile = $request->file('leader_cv');
+            $leaderCvFilename = $now . '_' . $leaderCvFile->getClientOriginalName();
+            $leaderCvFile->storeAs('leader_cv', $leaderCvFilename, 'public');
 
-        $user = User::create($userData);
+            $leaderCardFile = $request->file('leader_card');
+            $leaderCardFilename = $now . '_' . $leaderCardFile->getClientOriginalName();
+            $leaderCardFile->storeAs('leader_card', $leaderCardFilename, 'public');
+        
 
-        Session::forget('register_data');
+            // Create user with combined data
+            $userData = [
+                'team_name' => $registerData['team_name'],
+                'password' => $registerData['password'],
+                'leader_name' => $request -> leader_name,
+                'leader_email'  => $request -> leader_email,
+                'member_1' => $request->member_1,
+                'member_1_email' => $request->member_1_email,
+                'member_2' => $request->member_2,
+                'member_2_email' => $request->member_2_email,
+                'member_3' => $request->member_3,
+                'member_3_email' => $request->member_3_email,
+                'leader_whatsapp'  => $request -> leader_whatsapp,
+                'leader_line'  => $request -> leader_line,
+                'leader_github' => $request -> leader_github,
+                'leader_birth_place' => $request -> leader_birth_place,
+                'leader_birth_date' => $request -> leader_birth_date,
+                'leader_cv' => $leaderCvFilename,
+                'status' => (bool) $request->input('status'),
+                'leader_card' => $leaderCardFilename
+            ];
 
-        return redirect('/')->with('success', 'Team registered successfully!');
+            $user = User::create($userData);
+            \Log::info('New user created:', $user->toArray());
+            \DB::commit(); // Commit transaction
+            Session::forget('register_data'); // Clear session after success
+
+            return redirect('/')->with('success', 'Team registered successfully!');
+        } 
+        catch (\Exception $e) {
+            \DB::rollBack(); // Rollback if error occurs
+            return back()->withErrors(['database' => 'An error occurred during registration. Please try again.']);
+        }
     }
 
 

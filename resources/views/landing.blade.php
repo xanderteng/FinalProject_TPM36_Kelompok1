@@ -159,7 +159,7 @@
           A hackathon is a collaborative event where participants create innovative technology solutions, 
           often within a limited time, fostering creativity and teamwork.
       </p>
-      <button class="regist-button">Register Now!</button>
+      <button class="regist-button" onclick="window.location.href='{{ route('getRegister') }}'">Register Now!</button>
   </div>
 </section>
 
@@ -261,24 +261,34 @@
   <div class="title">Our Social Media</div>
   <div class="social-container">
       <div class="social-item instagram">
-          <img src="/storage/images/Instagram.png" alt="Instagram" class="social-logo">
-          <span class="social-name">technoscapebncc</span>
+          <a href="https://www.instagram.com/technoscapebncc/" target="_blank">
+            <img src="/storage/images/Instagram.png" alt="Instagram" class="social-logo">
+          </a>
+          <span class="social-name">@technoscapebncc</span>
       </div>
       <div class="social-item email">
-          <img src="/storage/images/Email.png" alt="Email" class="social-logo">
-          <span class="social-name">technoscapebncc</span>
+          <a href="mailto:technoevent@bncc.net" target="_blank">
+            <img src="/storage/images/Email.png" alt="Email" class="social-logo">
+          </a>
+          <span class="social-name">technoevent@bncc.net</span>
       </div>
       <div class="social-item facebook">
-          <img src="/storage/images/Facebook.png" alt="Facebook" class="social-logo">
+          <a href="https://www.facebook.com/bina.nusantara.computer.club/" target="_blank">
+            <img src="/storage/images/Facebook.png" alt="Facebook" class="social-logo">
+          </a>
           <span class="social-name">technoscapebncc</span>
       </div>
       <div class="social-item linkedin">
-          <img src="/storage/images/Linkedin.png" alt="LinkedIn" class="social-logo">
+          <a href="https://www.linkedin.com/company/bnccbinus/" target="_blank">
+            <img src="/storage/images/Linkedin.png" alt="LinkedIn" class="social-logo">
+          </a>
           <span class="social-name">technoscapebncc</span>
       </div>
       <div class="social-item twitter">
-          <img src="/storage/images/Twitter.png" alt="Twitter" class="social-logo">
-          <span class="social-name">technoscapebncc</span>
+          <a href="https://x.com/BNCC_Binus" target="_blank">
+            <img src="/storage/images/Twitter.png" alt="Twitter" class="social-logo">
+          </a>
+          <span class="social-name">@BNCC_Binus</span>
       </div>
   </div>
 </section>

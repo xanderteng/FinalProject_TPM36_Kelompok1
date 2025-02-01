@@ -1,55 +1,90 @@
+
+
+/* Remove all unwanted white spaces */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  box-sizing: border-box;
+}
+
+/* Ensure all sections use full width */
+.dashboard-container,
+.profile-section,
+.timeline-container,
+.footer-container {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 .navigation-header {
-    background-color: black;
-    display: flex;
-    flex-direction:row;
-    justify-content: space-between;
-    height: 115px;
-    width: 100%;
-    margin-bottom: 0;
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background-color: #040404; 
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Keeps logo, links, and button spaced */
+  padding: 10px 40px;
+  z-index: 1000;
+  font-family: 'Poppins', sans-serif;
+}
 
-  .logo {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 99px;
-    width: 99px;
-    margin-top: 8px;
-    margin-left: 45px;
-  }
+.logo {
+  width: 100px;
+  height: auto;
+  margin-right: auto;
+}
 
+/* Navbar links align to the left */
+.nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-grow: 1;
+  margin-left: 50px; /* Move all nav items slightly to the right */
+}
 
+.nav-links a {
+  font-size: 25px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 0 25px; /* Adjust spacing between links */
+  transition: color 0.3s;
+}
 
+/* Move HOME button slightly to the right */
+.nav-links a:first-child {
+  margin-left: 20px; /* Adjust for precise alignment */
+}
 
-  .nav-links {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-  }
+.nav-links a:hover {
+  color: #6D93AA; 
+}
 
-  .nav-btns {
-    font-family: 'poppins';
-    color: white;
-    text-decoration: none;
-    padding-right: 55px;
-  }
-
-  .logout-btn {
-    font-family: 'poppins';
-    border-radius: 50px;
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 2;
-    margin: auto 0;
-    padding: 11px 28px;
-    cursor: pointer;
-    background-image: linear-gradient(to right, #2C3B44, #6D93AA);
-    color: white;
-    text-decoration: none;
-    margin-right: 20px;
-  }
-
+/* Move LOGOUT button to the left */
+.logout-btn {
+  width: 120px;
+  height: 50px;
+  border-radius: 50px;
+  background: linear-gradient(38deg, #2C3B44 38%, #6D93AA 100%);
+  border: none;
+  color: #ffffff;
+  font-size: 18px;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 50px; /* Move it slightly to the left */
+}
 
 
 
@@ -71,13 +106,14 @@
     align-self: start;
     font: 700 96px/1 Poppins, sans-serif;
     margin-left: 35px;
+    transform: translateY(40px);
   }
 
   .profile-content {
-    margin-left: 35px;
+    margin-left: 10px;
     margin-top: 41px;
     display: flex;
-    gap: 20px;
+    gap: 60px;
   }
 
   .profile-image-section {
@@ -157,7 +193,7 @@
   }
 
   .github-section {
-    margin-top: 10px;
+    margin-top: -100px;
     width: 40%;
     color: #fff;
     font: 400 24px/2 Poppins, sans-serif;

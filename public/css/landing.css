@@ -712,8 +712,8 @@ nav ul li a:hover {
 .social-container .instagram { justify-self: start; } 
 .social-container .email { justify-self: start; } 
 .social-container .facebook { justify-self: start; } 
-.social-container .linkedin { justify-self: end; } 
-.social-container .twitter { justify-self: end; } 
+.social-container .linkedin { justify-self: start; } 
+.social-container .twitter { justify-self: start; } 
 
 footer {
     background: black;

@@ -1,14 +1,20 @@
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("register-form");
-    const teamNameField = document.querySelector(".input-team-name");
-    const passwordField = document.querySelector(".input-password");
-    const confirmPasswordField = document.querySelector(".input-confirm-password");
 
     form.addEventListener("submit", function (e) {
-        e.preventDefault();
+        let isValid = validateForm();
+        if (!isValid) {
+            e.preventDefault(); // Prevent submission only if invalid
+            return;
+        }
+        // No alert, let Laravel handle the redirect
+    });
+
+    function validateForm() {
         let isValid = true;
 
         // Validate Team Name
+        const teamNameField = document.querySelector(".input-team-name");
         if (!teamNameField.value.trim()) {
             setError(teamNameField, "Team Name is required!");
             isValid = false;
@@ -17,25 +23,25 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // Validate Password
+        const passwordField = document.querySelector(".input-password");
         if (!validatePassword(passwordField.value)) {
-            setError(passwordField, "Password must contain 8 characters and include at least one uppercase letter, one lowercase letter, one number, and one special character.");
+            setError(passwordField, "Password must contain at least 8 characters, one uppercase, one lowercase, one number, and one special character.");
             isValid = false;
         } else {
             setSuccess(passwordField);
         }
 
         // Validate Confirm Password
+        const confirmPasswordField = document.querySelector(".input-confirm-password");
         if (confirmPasswordField.value !== passwordField.value) {
-            setError(confirmPasswordField, "Password confirmation must match the password");
+            setError(confirmPasswordField, "Password confirmation must match the password.");
             isValid = false;
         } else {
             setSuccess(confirmPasswordField);
         }
 
-        if (isValid) {
-                window.location.href = "/register-2"; // Redirect if validation passes   
-        }
-    });
+        return isValid;
+    }
 
     function validatePassword(password) {
         return password.length >= 8 &&
@@ -46,16 +52,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function setError(input, message) {
-        const inputControl = input.parentElement;
-        const errorDisplay = inputControl.querySelector(".error-message");
-        inputControl.classList.add("error");
+        const errorDisplay = input.parentElement.querySelector(".error-message");
         errorDisplay.innerText = message;
+        input.classList.add("error");
     }
 
     function setSuccess(input) {
-        const inputControl = input.parentElement;
-        const errorDisplay = inputControl.querySelector(".error-message");
-        inputControl.classList.remove("error");
+        const errorDisplay = input.parentElement.querySelector(".error-message");
         errorDisplay.innerText = "";
+        input.classList.remove("error");
     }
 });

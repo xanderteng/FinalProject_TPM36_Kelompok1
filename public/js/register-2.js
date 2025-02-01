@@ -30,23 +30,22 @@ document.addEventListener("DOMContentLoaded", function () {
     updateLabel();
 
     form.addEventListener("submit", function (e) {
-        e.preventDefault();
         clearAllErrors();
-        if (!validateForm()) {
+        let isValid = validateForm();
+
+        if (!isValid) {
+            e.preventDefault(); // Prevent submission only if invalid
             return;
         }
-        alert("Registration successful!");
-        form.submit();
     });
 
     function validateForm() {
         let isValid = true;
 
-        // Validate required fields (excluding member fields)
-        document.querySelectorAll("input:not([id^='member_'], [type='file'])").forEach(input => {
+        // Validate required fields
+        document.querySelectorAll("input:not([type='file'])").forEach(input => {
             if (!input.value.trim()) {
-                const label = getInputLabel(input);
-                showErrorMessage(input, `${label} cannot be empty`);
+                showErrorMessage(input, `${getInputLabel(input)} cannot be empty`);
                 isValid = false;
             }
         });

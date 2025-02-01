@@ -6,6 +6,7 @@ use App\Http\Controllers\EmailController;
 use App\Http\Controllers\AdminController;
 
 Route::get('/', function () {
+    Session::forget('register_data');
     return view('landing');
 })->name('landing');
 

@@ -11,21 +11,30 @@
 </head>
 <body>
     <div class="dashboard-container">
-        <header class="navigation-header">
-          <a href={{route('landing')}}>
-          <img src="/storage/images/logo hackathon.png" alt="Company Logo" class="logo" />
-          </a>
-          <nav class="nav-links">
-            <a href={{route('landing')}} class="nav-btns">HOME</a>
-            <a href="prize.html" class="nav-btns">PRIZE</a>
-            <a href="mentor.html" class="nav-btns">MENTOR & JURY</a>
-            <a href="about.html" class="nav-btns">ABOUT</a>
-            <a href="faq.html" class="nav-btns">FAQ</a>
-            <a href="timeline.html" class="nav-btns">TIMELINE</a>
-
-          </nav>
-          <button class="logout-btn" onclick="window.location.href='log_in.html'">LOGOUT</button>
-        </header>
+      <header class="navigation-header">
+        <a href="{{ route('landing') }}">
+            <img src="/storage/images/logo-hackathon.png" alt="Company Logo" class="logo" />
+        </a>
+        <nav class="nav-links">
+            <a href="{{ route('landing') }}">HOME</a>
+            <a href="{{ route('landing') }}#prizes">PRIZE</a>
+            <a href="{{ route('landing') }}#mentors">MENTOR & JURY</a>
+            <a href="{{ route('landing') }}#about">ABOUT</a>
+            <a href="{{ route('landing') }}#faq">FAQ</a>
+            <a href="{{ route('landing') }}#timeline">TIMELINE</a>
+            <a href="{{ Auth::check() ? route('dashboard', Auth::id()) : route('getLogin') }}">DASHBOARD</a>
+        </nav>
+        <div class="auth-container">
+            @if (Auth::check())
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button class="logout-btn">LOGOUT</button>
+                </form>
+            @else
+                <button class="logout-btn" onclick="window.location.href='{{ route('getLogin') }}'">LOGIN</button>
+            @endif
+        </div>
+     </header>
     </div>
 
 
@@ -62,7 +71,9 @@
             </div>
             <div class="contact-info">
               <div class="info-label">Birthdate :</div>
-              <div class="info-value"> {{ $user->leader_birth_date }} ,  {{ $user->leader_birth_place }}</div>
+              <div class="info-value">  {{ \Carbon\Carbon::parse($user->leader_birth_date)->format('d F Y') }}</div>
+              <div class="info-label">Birthplace :</div>
+              <div class="info-value">  {{ $user->leader_birth_place }}</div>
               <div class="info-label">Whatsapp :</div>
               <div class="info-value"> {{ $user->leader_whatsapp }}</div>
             </div>
