@@ -157,6 +157,9 @@ class AuthController extends Controller
 
 
     function getLogin(){
+        if (Auth::check()) {
+            return redirect()->route('dashboard', Auth::id()); // Redirect to dashboard if already logged in
+        }
         return view('login');
     }
 
